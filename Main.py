@@ -8,16 +8,13 @@ from msedge.selenium_tools import Edge, EdgeOptions
 class Main_Window(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
+        self.login = False
         self.setupUi(self)
         self.Lock()
         self.Signal()
 
     def Signal(self):
         self.Login_btn.clicked.connect(self.Action_Login)
-
-    def Action_Login(self):
-        Showloginpage = LoginPage.LoginPage(Driver)
-        Showloginpage.exec_()
 
     def Lock(self):
         self.Cur_list.setEnabled(False)
@@ -27,6 +24,23 @@ class Main_Window(QMainWindow, Ui_MainWindow):
         self.Cur_list.setEnabled(True)
         self.Tap_dis.setEnabled(True)
 
+    def Action_Login(self):
+        Showloginpage = LoginPage.LoginPage(Driver, self.login)
+        Showloginpage.exec_()
+        if Showloginpage.lmsOk and Showloginpage.hrdOk:
+            self.User_info.setText('환영합니다.'+Showloginpage.userName)
+            self.Login_btn.setText('로그아웃')
+            self.login=True
+            self.Unlock()
+        else:
+            self.User_info.setText('로그인이 필요합니다.')
+            self.Login_btn.setText('로그인')
+            self.login=False
+            self.Lock()
+
+
+
+
 
 def SeleniumSettings():
     Options = EdgeOptions()
@@ -35,7 +49,7 @@ def SeleniumSettings():
     # Options.add_argument("disable-gpu")
     # Headlass 옵션
     global Driver
-    Driver= Edge(options=Options, executable_path='lib/driver/msedgedriver.exe')
+    Driver = Edge(options=Options, executable_path='lib/driver/msedgedriver.exe')
 
 
 if __name__ == '__main__':

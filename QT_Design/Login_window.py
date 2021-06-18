@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import *
 
 
 class Ui_Dialog(object):
@@ -41,6 +42,7 @@ class Ui_Dialog(object):
         self.Pw_input_oklms = QtWidgets.QLineEdit(self.groupBox)
         self.Pw_input_oklms.setGeometry(QtCore.QRect(40, 60, 131, 31))
         self.Pw_input_oklms.setObjectName("Pw_input_oklms")
+        self.Pw_input_oklms.setEchoMode(QLineEdit.Password)
         self.Login_btn_oklms = QtWidgets.QPushButton(self.groupBox)
         self.Login_btn_oklms.setGeometry(QtCore.QRect(10, 100, 161, 31))
         self.Login_btn_oklms.setObjectName("Login_btn_oklms")
@@ -71,6 +73,7 @@ class Ui_Dialog(object):
         self.Pw_input_hrdnet = QtWidgets.QLineEdit(self.groupBox_3)
         self.Pw_input_hrdnet.setGeometry(QtCore.QRect(40, 60, 131, 31))
         self.Pw_input_hrdnet.setObjectName("Pw_input_hrdnet")
+        self.Pw_input_oklms.setEchoMode(QLineEdit.Password)
         self.label_6 = QtWidgets.QLabel(self.groupBox_3)
         self.label_6.setGeometry(QtCore.QRect(10, 70, 71, 16))
         self.label_6.setObjectName("label_6")
