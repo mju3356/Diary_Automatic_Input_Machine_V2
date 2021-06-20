@@ -7,14 +7,14 @@ import configparser
 
 
 class LoginPage(QDialog, Ui_Dialog):
-    def __init__(self, driver,login):
+    def __init__(self, driver, login):
         super().__init__()
         self.setupUi(self)
         self.Signal()
         self.driver = driver
-        self.login=login
-        self.hrdOk=self.lmsOk = False
-        self.ConfigRead()
+        self.login = login
+        self.hrdOk = self.lmsOk = False
+        self.ReadConfig()
         self.CheckAutoLogin()
         self.CheckLogOut()
 
@@ -25,14 +25,14 @@ class LoginPage(QDialog, Ui_Dialog):
 
     def ActionAutoSave(self):
         if self.Auto_login_check.isChecked():
-            self.autoLogin = True
+            self.autoLogin = 1
         else:
-            self.autoLogin = False
+            self.autoLogin = 0
 
     def HrdLogin(self):
         if not self.hrdOk:
-            id = self.Id_input_hrdnet.text()
-            pw = self.Pw_input_hrdnet.text()
+            self.hrdId=id = self.Id_input_hrdnet.text()
+            self.hrdPw=pw = self.Pw_input_hrdnet.text()
             if id is None or id == '' or not id:
                 QMessageBox.about(self, 'Error', 'ID를 입력하세요')
                 self.Id_input_hrdnet.setFocus(True)
@@ -62,8 +62,8 @@ class LoginPage(QDialog, Ui_Dialog):
 
     def LmsLogin(self):
         if not self.lmsOk:
-            id = self.Id_input_oklms.text()
-            pw = self.Pw_input_oklms.text()
+            self.lmsId = id = self.Id_input_oklms.text()
+            self.lmsPw = pw = self.Pw_input_oklms.text()
             if id is None or id == '' or not id:
                 QMessageBox.about(self, 'Error', 'ID를 입력하세요')
                 self.Id_input_hrdnet.setFocus(True)
@@ -80,7 +80,7 @@ class LoginPage(QDialog, Ui_Dialog):
             time.sleep(1)
             try:
                 self.driver.switch_to.alert.accept()
-                QMessageBox.about(self, 'Error', '로그인에 실패했습니다.')
+                QMessageBox.about(self, 'Error', 'OK-LMS 로그인에 실패했습니다.')
                 return None
             except:
                 soup = BeautifulSoup(self.driver.page_source, 'html.parser')
@@ -93,36 +93,33 @@ class LoginPage(QDialog, Ui_Dialog):
             self.lmsOk = False
             self.Login_btn_oklms.setText('로그인')
 
-    def ConfigRead(self):
+    def ReadConfig(self):
         config = configparser.ConfigParser()
         config.read('Settings.ini')
         settings = config['Settings']
-        self.autoLogin = bool(int(settings['autoLogin']))
+        self.autoLogin = int(settings['autoLogin'])
         self.hrdId = settings['hrdId']
         self.hrdPw = settings['hrdPw']
         self.lmsId = settings['lmsId']
         self.lmsPw = settings['lmsPw']
-        print(self.autoLogin)
-
 
     def CheckAutoLogin(self):
         if self.autoLogin and not self.login:
             self.Auto_login_check.setChecked(True)
             self.Id_input_oklms.setText(self.lmsId)
             self.Pw_input_oklms.setText(self.lmsPw)
-            self.Id_input_hrdnet.setText(self.hrdOk)
+            self.Id_input_hrdnet.setText(self.hrdId)
             self.Pw_input_hrdnet.setText(self.hrdPw)
             self.HrdLogin()
             self.LmsLogin()
-            QMessageBox.about(self,'완료','자동로그인 완료되었습니다.')
+            QMessageBox.about(self, '완료', '자동로그인 완료되었습니다.')
 
     def CheckLogOut(self):
         if self.login:
-            self.lmsOk=self.hrdOk=True
+            self.lmsOk = self.hrdOk = True
             self.LmsLogin()
             self.HrdLogin()
-            QMessageBox.about(self,'완료','로그아웃되었습니다.')
-
+            QMessageBox.about(self, '완료', '로그아웃되었습니다.')
 
 
 if __name__ == '__main__':

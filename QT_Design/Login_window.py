@@ -73,7 +73,7 @@ class Ui_Dialog(object):
         self.Pw_input_hrdnet = QtWidgets.QLineEdit(self.groupBox_3)
         self.Pw_input_hrdnet.setGeometry(QtCore.QRect(40, 60, 131, 31))
         self.Pw_input_hrdnet.setObjectName("Pw_input_hrdnet")
-        self.Pw_input_oklms.setEchoMode(QLineEdit.Password)
+        self.Pw_input_hrdnet.setEchoMode(QLineEdit.Password)
         self.label_6 = QtWidgets.QLabel(self.groupBox_3)
         self.label_6.setGeometry(QtCore.QRect(10, 70, 71, 16))
         self.label_6.setObjectName("label_6")
